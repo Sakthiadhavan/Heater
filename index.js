@@ -8,14 +8,18 @@ const cors = require("cors");
 app.use(express.json());
 app.use(cors());
 
-mongoose.connect("mongodb+srv://sakthiadhavank21eie:Mf7M8XXmUIGaPk67@cluster0.q8cnnkn.mongodb.net/Organizers", { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
+mongoose.connect("mongodb+srv://sakthiadhavank21eie:Mf7M8XXmUIGaPk67@cluster0.q8cnnkn.mongodb.net/Organizers", {
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+  bufferCommands: false, // Disable buffering of commands
+  connectTimeoutMS: 30000, // Increase connection timeout (default is 30000 ms)
+  socketTimeoutMS: 45000 // Increase socket timeout (default is 45000 ms)
+}).then(() => {
     console.log("MongoDB connected successfully");
   })
   .catch((err) => {
     console.error("Error connecting to MongoDB:", err);
   });
-
 const Organizers = mongoose.model('owners', {
   email: {
     type: String,
