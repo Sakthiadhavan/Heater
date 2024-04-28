@@ -45,6 +45,43 @@ const fetchUser = async (req, res, next) => {
   }
 };
 
+const Mode = mongoose.model('mode',{
+  mode : {
+    type:"String"
+  }
+
+}
+)
+app.get('/getMode',async(req,res)=>{
+  try {
+  
+    const getted_mode = await Mode.findOne();
+    res.json({mode:getted_mode.mode})
+  }
+  catch (error) {
+    // Handle errors
+    console.error('Error while changing status:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+})
+
+
+app.post('/changeMode',async(req,res)=>{
+  try{
+  const getted_mode= await Mode.findOne({});
+  getted_mode.mode=getted_mode.mode=req.body.mode;
+  await getted_mode.save()
+  res.json({ success:true,message: 'Status changed successfully', newMode: getted_mode.mode });
+ 
+} catch (error) {
+  // Handle errors
+  console.error('Error while changing status:', error);
+  res.status(500).json({ error: 'Internal server error' });
+}
+})
+
+
+
 app.post('/login', async (req, res) => {
   try {
     const user = await Organizers.findOne({ email: req.body.username,pass:req.body.password });
